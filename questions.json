@@ -2,26 +2,43 @@
     "questions": [
         {
             "Q1": "Söitkö aamupalaa?",
-            "A1": "Kyllä",
-            "A2": "En"
+            "type": "radio",
+            "options": [
+                "kyllä",
+                "en"
+            ]
         },
         {
-            "Q2": "Onko sinulla lempiväriä?"
+            "Q2": "Onko sinulla lempiväriä?",
+            "type": "radio",
+            "options": [
+                "kyllä",
+                "ei"
+            ]
         },
         {
             "Q3": "Kumpi tuli ensin muna vai kana?",
-            "A1": "Muna",
-            "A2": "Kana"
+            "type": "radio",
+            "options": [
+                "muna",
+                "kana"
+            ]
         },
         {
             "Q4": "Oletko aamuihminen?",
-            "A1": "Kyllä",
-            "A2": "En"
+            "type": "radio",
+            "options": [
+                "kyllä",
+                "en"
+            ]
         },
         {
             "Q5": "Pidätkö talvesta?",
-            "A1": "Kyllä",
-            "A2": "En"
+            "type": "radio",
+            "options": [
+                "kyllä",
+                "en"
+            ]
         }
     ]
 }
