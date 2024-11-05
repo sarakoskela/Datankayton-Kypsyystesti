@@ -1,0 +1,29 @@
+{
+    "questions": [
+        {
+            "Q1": "Söitkö aamupalaa?",
+            "A1": "Kyllä",
+            "A2": "En"
+        },
+        {
+            "Q2": "Onko sinulla lempiväriä?",
+            "A1": "Kyllä",
+            "A2": "Ei"
+        },
+        {
+            "Q3": "Kumpi tuli ensin muna vai kana?",
+            "A1": "Muna",
+            "A2": "Kana"
+        },
+        {
+            "Q4": "Oletko aamuihminen?",
+            "A1": "Kyllä",
+            "A2": "En"
+        },
+        {
+            "Q5": "Pidätkö talvesta?",
+            "A1": "Kyllä",
+            "A2": "En"
+        }
+    ]
+}
