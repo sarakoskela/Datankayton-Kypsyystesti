@@ -1,5 +1,5 @@
 // Fetch JSON data and display questions
-fetch('questions.json')
+fetch('../questions.json')
     .then(response => response.json())
     .then(data => displayQuestions(data.questions))  // Access the questions array
     .catch(error => console.error("Error loading questions:", error));
