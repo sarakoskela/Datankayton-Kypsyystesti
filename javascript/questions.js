@@ -53,14 +53,23 @@ function displayQuestion(index) {
 
         // Add the radio wrapper to the question wrapper
         questionWrapper.appendChild(radioWrapper);
+
+        // Enable the Next button when an option is selected
+        radioInput.addEventListener('change', () => {
+            nextButton.disabled = false;
+        });
     });
 
     // Add the question wrapper to the container
     container.appendChild(questionWrapper);
+
+    // Disable the Next button initially until an option is selected
+    nextButton.disabled = true;
 }
 
 // Event listener for the Next button
-document.getElementById('next-button').addEventListener('click', () => {
+const nextButton = document.getElementById('next-button');
+nextButton.addEventListener('click', () => {
     // Move to the next question
     currentQuestionIndex++;
 
@@ -70,6 +79,6 @@ document.getElementById('next-button').addEventListener('click', () => {
     } else {
         // If there are no more questions, show a completion message
         document.getElementById('question-container').innerHTML = '<p>Thank you for completing the questionnaire!</p>';
-        document.getElementById('next-button').style.display = 'none';  // Hide the Next button
+        nextButton.style.display = 'none';  // Hide the Next button
     }
 });
