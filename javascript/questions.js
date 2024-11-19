@@ -1,6 +1,17 @@
 let currentQuestionIndex = 0;
 let questionsData = [];
 
+let answersData = {
+    answers: [
+        { Q1: "Söitkö aamupalaa?", A1: "" },
+        { Q2: "Mikä tai mitkä ovat lempivärejäsi?", A2: "" },
+        { Q3: "Kuinka paljon pidät kahvista asteikolla 1–10?", A3: "" },
+        { Q4: "Kumpi tuli ensin muna vai kana?", A4: "" },
+        { Q5: "Oletko aamuihminen?", A5: "" },
+        { Q6: "Pidätkö talvesta?", A6: "" }
+    ]
+};
+
 // Fetch JSON data and initialize questions
 fetch('../questions.json')
     .then(response => response.json())
@@ -106,15 +117,40 @@ function displayQuestion(index) {
 // Event listener for the Next button
 const nextButton = document.getElementById('next-button');
 nextButton.addEventListener('click', () => {
+    const currentQuestion = questionsData[currentQuestionIndex];
+    const questionKey = `A${currentQuestionIndex + 1}`; // A1, A2, etc.
+
+    // Save the answer based on question type
+    if (currentQuestion.type === 'radio') {
+        // Find selected radio button
+        const selectedOption = document.querySelector(
+            `input[name="question-${currentQuestionIndex}"]:checked`
+        );
+        if (selectedOption) {
+            answersData.answers[currentQuestionIndex][questionKey] = selectedOption.value;
+        }
+    } else if (currentQuestion.type === 'multiselect') {
+        // Collect all checked checkboxes
+        const selectedOptions = Array.from(
+            document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]:checked`)
+        ).map(checkbox => checkbox.value);
+        answersData.answers[currentQuestionIndex][questionKey] = selectedOptions.join(', ');
+    } else if (currentQuestion.type === 'slider') {
+        // Get the slider value
+        const sliderValue = document.getElementById(`question-${currentQuestionIndex}-slider`).value;
+        answersData.answers[currentQuestionIndex][questionKey] = sliderValue;
+    }
+
     // Move to the next question
     currentQuestionIndex++;
-
-    // If there are more questions, display the next question
     if (currentQuestionIndex < questionsData.length) {
         displayQuestion(currentQuestionIndex);
     } else {
-        // If there are no more questions, show a completion message
-        document.getElementById('question-container').innerHTML = '<p>Kiitos osallistumisesta!</p>';
-        nextButton.style.display = 'none';  // Hide the Next button
+        // If no more questions, display answers or save them
+        document.getElementById('question-container').innerHTML = '<p>Thank you for completing the questionnaire!</p>';
+        nextButton.style.display = 'none'; // Hide the Next button
+
+        // Log answersData or save it to a server
+        console.log('User Answers:', JSON.stringify(answersData, null, 2));
     }
 });
