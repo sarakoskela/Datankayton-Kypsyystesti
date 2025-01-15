@@ -1,3 +1,7 @@
+require('dotenv').config();
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+
 let currentQuestionIndex = 0;
 let questionsData = [];
 
@@ -154,3 +158,29 @@ nextButton.addEventListener('click', () => {
         console.log('User Answers:', JSON.stringify(answersData, null, 2));
     }
 });
+
+
+//TODO: CHECK GEMINI API AND STUFF
+const axios = require('axios');
+
+async function getSummaryFromGemini(answers) {
+    const url = 'https://api.gemini-ai.com/v1/summarize'; // Replace with the actual Gemini API URL
+
+    try {
+        const response = await axios.post(
+            url,
+            { answers }, // Structure the payload according to Gemini API requirements
+            {
+                headers: {
+                    'Authorization': `Bearer ${GEMINI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        return response.data; // Process the response as needed
+    } catch (error) {
+        console.error('Error communicating with Gemini API:', error.message);
+        throw new Error('Failed to get summary from Gemini API');
+    }
+}
