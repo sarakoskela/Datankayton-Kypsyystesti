@@ -11,6 +11,11 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <title>Datanköytön kypsyystesti</title>
+
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Test your data usage maturity with this interactive quiz!">
+
 </head>
 
 <body>
@@ -24,7 +29,16 @@
             </div>
         </div>
     </div>
+    <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div id="error-message" class="alert alert-danger" role="alert" style="display: none;">Error in fetching Gemini
+        summary</div>
+
     <script src="../javascript/questions.js"></script>
 </body>
+<footer class="text-center mt-4">
+    <p>&copy; 2025 Datankäytön Kypsyystesti</p>
+</footer>
 
 </html>
