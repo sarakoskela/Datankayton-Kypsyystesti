@@ -1,3 +1,3 @@
-# Projektity-2
+# Projekti: Kyberturvan datankäytön kypsyystesti
 
-Tänne selostetaan miten projekti toimii
+Tänne selostetaan miten projekti toimii, jos toimii
