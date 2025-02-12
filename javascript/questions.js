@@ -1,5 +1,4 @@
-require('dotenv').config();
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+//require('dotenv').config();
 
 
 let currentQuestionIndex = 0;
@@ -15,6 +14,13 @@ let answersData = {
         { Q6: "Pidätkö talvesta?", A6: "" }
     ]
 };
+
+function hideSummary() {
+    const analysis = document.getElementById('summary-container');
+    analysis.style.display = "none";
+}
+
+hideSummary();
 
 // Fetch JSON data and initialize questions
 fetch('../questions.json')
@@ -120,7 +126,7 @@ function displayQuestion(index) {
 
 // Event listener for the Next button
 const nextButton = document.getElementById('next-button');
-nextButton.addEventListener('click', () => {
+nextButton.addEventListener('click', (progress) => {
     const currentQuestion = questionsData[currentQuestionIndex];
     const questionKey = `A${currentQuestionIndex + 1}`; // A1, A2, etc.
 
@@ -157,41 +163,28 @@ nextButton.addEventListener('click', () => {
         // Log answersData or save it to a server
         console.log('User Answers:', JSON.stringify(answersData, null, 2));
     }
+
+    updateProgress();
 });
 
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+function getGeminiAnalysis() {
+    const GEMINI_API_URL = '';
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-const prompt = "Explain how AI works";
+    displayAnalysis();
+}
 
-const result = await model.generateContent(prompt);
-console.log(result.response.text());
+function displayAnalysis() {
+    const analysis = document.getElementById('analysis-container');
+    nextButton.style.display = 'none';
+    analysis.style.display = 'block';
+}
 
-
-//TODO: CHECK GEMINI API AND STUFF
-const axios = require('axios');
-
-async function getSummaryFromGemini(answers) {
-    const url = 'https://api.gemini-ai.com/v1/summarize'; // Replace with the actual Gemini API URL
-
-    try {
-        const response = await axios.post(
-            url,
-            { answers }, // Structure the payload according to Gemini API requirements
-            {
-                headers: {
-                    'Authorization': `Bearer ${GEMINI_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        return response.data; // Process the response as needed
-    } catch (error) {
-        console.error('Error communicating with Gemini API:', error.message);
-        throw new Error('Failed to get summary from Gemini API');
-    }
+function updateProgress() {
+    let progress = (currentQuestionIndex / questionsData.length) * 100;
+    console.log(progress);
+    document.getElementById('progress-bar').style.width = progress + "%";
+    return progress;
 }
