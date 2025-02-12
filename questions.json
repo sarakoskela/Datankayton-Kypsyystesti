@@ -2,28 +2,53 @@
     "questions": [
         {
             "Q1": "Söitkö aamupalaa?",
-            "A1": "Kyllä",
-            "A2": "En"
+            "type": "radio",
+            "options": [
+                "kyllä",
+                "en"
+            ]
         },
         {
-            "Q2": "Onko sinulla lempiväriä?",
-            "A1": "Kyllä",
-            "A2": "Ei"
+            "Q2": "Mikä tai mitkä ovat lempivärejäsi?",
+            "type": "multiselect",
+            "options": [
+                "punainen",
+                "sininen",
+                "vihreä",
+                "liila",
+                "en tiedä"
+            ]
         },
         {
-            "Q3": "Kumpi tuli ensin muna vai kana?",
-            "A1": "Muna",
-            "A2": "Kana"
+            "Q3": "Kuinka paljon pidät kahvista asteikolla 1–10?",
+            "type": "slider",
+            "min": 1,
+            "max": 10,
+            "step": 1
         },
         {
-            "Q4": "Oletko aamuihminen?",
-            "A1": "Kyllä",
-            "A2": "En"
+            "Q4": "Kumpi tuli ensin muna vai kana?",
+            "type": "radio",
+            "options": [
+                "muna",
+                "kana"
+            ]
         },
         {
-            "Q5": "Pidätkö talvesta?",
-            "A1": "Kyllä",
-            "A2": "En"
+            "Q5": "Oletko aamuihminen?",
+            "type": "radio",
+            "options": [
+                "kyllä",
+                "en"
+            ]
+        },
+        {
+            "Q6": "Pidätkö talvesta?",
+            "type": "radio",
+            "options": [
+                "kyllä",
+                "en"
+            ]
         }
     ]
 }
