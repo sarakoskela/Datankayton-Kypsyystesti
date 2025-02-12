@@ -9,15 +9,25 @@
             ]
         },
         {
-            "Q2": "Onko sinulla lempiväriä?",
-            "type": "radio",
+            "Q2": "Mikä tai mitkä ovat lempivärejäsi?",
+            "type": "multiselect",
             "options": [
-                "kyllä",
-                "ei"
+                "punainen",
+                "sininen",
+                "vihreä",
+                "liila",
+                "en tiedä"
             ]
         },
         {
-            "Q3": "Kumpi tuli ensin muna vai kana?",
+            "Q3": "Kuinka paljon pidät kahvista asteikolla 1–10?",
+            "type": "slider",
+            "min": 1,
+            "max": 10,
+            "step": 1
+        },
+        {
+            "Q4": "Kumpi tuli ensin muna vai kana?",
             "type": "radio",
             "options": [
                 "muna",
@@ -25,7 +35,7 @@
             ]
         },
         {
-            "Q4": "Oletko aamuihminen?",
+            "Q5": "Oletko aamuihminen?",
             "type": "radio",
             "options": [
                 "kyllä",
@@ -33,7 +43,7 @@
             ]
         },
         {
-            "Q5": "Pidätkö talvesta?",
+            "Q6": "Pidätkö talvesta?",
             "type": "radio",
             "options": [
                 "kyllä",
