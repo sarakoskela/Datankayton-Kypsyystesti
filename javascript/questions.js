@@ -1,5 +1,10 @@
 //require('dotenv').config();
 
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const prompt = "";
+
 
 let currentQuestionIndex = 0;
 let questionsData = [];
@@ -15,12 +20,6 @@ let answersData = {
     ]
 };
 
-function hideSummary() {
-    const analysis = document.getElementById('summary-container');
-    analysis.style.display = "none";
-}
-
-hideSummary();
 
 // Fetch JSON data and initialize questions
 fetch('../questions.json')
@@ -157,11 +156,7 @@ nextButton.addEventListener('click', (progress) => {
         displayQuestion(currentQuestionIndex);
     } else {
         // If no more questions, display answers or save them
-        document.getElementById('question-container').innerHTML = '<p>Thank you for completing the questionnaire!</p>';
-        nextButton.style.display = 'none'; // Hide the Next button
-
-        // Log answersData or save it to a server
-        console.log('User Answers:', JSON.stringify(answersData, null, 2));
+        displayAnalysis();
     }
 
     updateProgress();
@@ -170,16 +165,17 @@ nextButton.addEventListener('click', (progress) => {
 
 
 function getGeminiAnalysis() {
-    const GEMINI_API_URL = '';
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-    displayAnalysis();
+    //var analysis = "";
+    //const result = await model.generateContent([prompt, analysis]);
 }
 
 function displayAnalysis() {
-    const analysis = document.getElementById('analysis-container');
+    //console.log(result.response.text());
+    document.getElementById('question-container').innerHTML = "thank you for partcipating in the questionaire!";
     nextButton.style.display = 'none';
-    analysis.style.display = 'block';
+
+    // Log answersData or save it to a server
+    console.log('User Answers:', JSON.stringify(answersData, null, 2));
 }
 
 function updateProgress() {
