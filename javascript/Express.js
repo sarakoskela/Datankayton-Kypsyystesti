@@ -5,8 +5,6 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 const prompt = "";
 
-
-
 export async function getGeminiAnalysis(answersData) {
     const prompt = `Analysoi seuraavat käyttäjän vastaukset kyselyyn ja anna lyhyt yhteenveto:
     
