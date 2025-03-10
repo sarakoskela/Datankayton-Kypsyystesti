@@ -1,54 +1,95 @@
 {
     "questions": [
         {
-            "Q1": "Söitkö aamupalaa?",
-            "type": "radio",
-            "options": [
-                "kyllä",
-                "en"
-            ]
-        },
-        {
-            "Q2": "Mikä tai mitkä ovat lempivärejäsi?",
-            "type": "multiselect",
-            "options": [
-                "punainen",
-                "sininen",
-                "vihreä",
-                "liila",
-                "en tiedä"
-            ]
-        },
-        {
-            "Q3": "Kuinka paljon pidät kahvista asteikolla 1–10?",
+            "Q1": "Onko yrityksellänne selkeä visio, missio ja arvot, jotka tukevat osallistumista tietoekosysteemiin?",
             "type": "slider",
-            "min": 1,
-            "max": 10,
+            "min": 0,
+            "max": 4,
             "step": 1
         },
         {
-            "Q4": "Kumpi tuli ensin muna vai kana?",
-            "type": "radio",
-            "options": [
-                "muna",
-                "kana"
-            ]
+            "Q2": "Onko yrityksellänne selkeät käytännöt datan keräämiseen, elinkaaren hallintaan ja laadunvarmistukseen osana ekosysteemin toimintaa?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
         },
         {
-            "Q5": "Oletko aamuihminen?",
-            "type": "radio",
-            "options": [
-                "kyllä",
-                "en"
-            ]
+            "Q3": "Onko yrityksellänne käytössä mekanismit (esim. anonymisointi, pseudonymisointi) henkilötietojen suojan varmistamiseksi datan jakamisessa?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
         },
         {
-            "Q6": "Pidätkö talvesta?",
-            "type": "radio",
-            "options": [
-                "kyllä",
-                "en"
-            ]
+            "Q4": "Onko yrityksellänne tekniset valmiudet varmistaa datan yhteen toimivuus ekosysteemissä (esim. semanttinen ja tekninen yhteensopivuus)?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q5": "Onko yrityksellänne selkeät datan käyttöoikeuksia ja jakamista koskevat periaatteet, jotka ovat linjassa Sitran Reilun datatalouden sääntökirjan kanssa?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q6": "Onko yrityksellänne tarvittavat tekniset valmiudet, kuten API-rajapinnat ja identiteetinhallinta, mahdollistamaan datan turvallisen jakamisen?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q7": "Onko yrityksessänne tunnistettu ja hallittu tietoturvariskejä, jotka liittyvät datan jakamiseen ekosysteemissä?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q8": "Onko yrityksenne tietoinen ja valmis noudattamaan datan jakamiseen liittyviä lakeja ja säädöksiä, kuten GDPR:ää ja kansallista tietosuojalainsäädäntöä?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q9": "Onko yrityksenne määritellyt selkeästi oman roolinsa (esim. datan tarjoaja, palveluntarjoaja, loppukäyttäjä) ekosysteemissä?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q10": "Kuinka hyvin yrityksenne noudattaa eettisiä periaatteita, kuten datan reilu käyttö, yksityisyyden suoja ja vastuullisuus?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q11": "Kuinka hyvin yrityksenne on tunnistanut ja määritellyt liiketoimintahyödyt, jotka tietoekosysteemiin liittymisestä syntyvät?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q12": "Onko yrityksellänne valmiudet tehdä yhteistyötä muiden ekosysteemin toimijoiden kanssa ja osallistua ekosysteemin hallinnointiin?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
+        },
+        {
+            "Q13": "Kuinka hyvin yrityksenne tuntee tietoekosysteemin sopimusmallit ja hallinnolliset käytännöt?",
+            "type": "slider",
+            "min": 0,
+            "max": 4,
+            "step": 1
         }
     ]
 }
