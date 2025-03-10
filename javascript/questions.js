@@ -1,35 +1,49 @@
-//require('dotenv').config();
-
+//import { displayAnalysis } from "./Express.js";
 
 let currentQuestionIndex = 0;
+let currentTitleIndex = 0;
 let questionsData = [];
+let titlesData = [];
+let rankingPointCounter = 0;
 
 let answersData = {
     answers: [
-        { Q1: "Söitkö aamupalaa?", A1: "" },
-        { Q2: "Mikä tai mitkä ovat lempivärejäsi?", A2: "" },
-        { Q3: "Kuinka paljon pidät kahvista asteikolla 1–10?", A3: "" },
-        { Q4: "Kumpi tuli ensin muna vai kana?", A4: "" },
-        { Q5: "Oletko aamuihminen?", A5: "" },
-        { Q6: "Pidätkö talvesta?", A6: "" }
+        { Q1: "Onko yrityksellänne selkeä visio, missio ja arvot, jotka tukevat osallistumista tietoekosysteemiin?", A1: "" },
+        { Q2: "Onko yrityksellänne selkeät käytännöt datan keräämiseen, elinkaaren hallintaan ja laadunvarmistukseen osana ekosysteemin toimintaa?", A2: "" },
+        { Q3: "Onko yrityksellänne käytössä mekanismit (esim. anonymisointi, pseudonymisointi) henkilötietojen suojan varmistamiseksi datan jakamisessa?", A3: "" },
+        { Q4: "Onko yrityksellänne tekniset valmiudet varmistaa datan yhteen toimivuus ekosysteemissä (esim. semanttinen ja tekninen yhteensopivuus)?", A4: "" },
+        { Q5: "Onko yrityksellänne selkeät datan käyttöoikeuksia ja jakamista koskevat periaatteet, jotka ovat linjassa Sitran Reilun datatalouden sääntökirjan kanssa?", A5: "" },
+        { Q6: "Onko yrityksellänne tarvittavat tekniset valmiudet, kuten API-rajapinnat ja identiteetinhallinta, mahdollistamaan datan turvallisen jakamisen?", A6: "" },
+        { Q7: "Onko yrityksessänne tunnistettu ja hallittu tietoturvariskejä, jotka liittyvät datan jakamiseen ekosysteemissä?", A7: "" },
+        { Q8: "Onko yrityksenne tietoinen ja valmis noudattamaan datan jakamiseen liittyviä lakeja ja säädöksiä, kuten GDPR:ää ja kansallista tietosuojalainsäädäntöä?", A8: "" },
+        { Q9: "Onko yrityksenne määritellyt selkeästi oman roolinsa (esim. datan tarjoaja, palveluntarjoaja, loppukäyttäjä) ekosysteemissä?", A9: "" },
+        { Q10: "Kuinka hyvin yrityksenne noudattaa eettisiä periaatteita, kuten datan reilu käyttö, yksityisyyden suoja ja vastuullisuus?", A10: "" },
+        { Q11: "Kuinka hyvin yrityksenne on tunnistanut ja määritellyt liiketoimintahyödyt, jotka tietoekosysteemiin liittymisestä syntyvät?", A11: "" },
+        { Q12: "Onko yrityksellänne valmiudet tehdä yhteistyötä muiden ekosysteemin toimijoiden kanssa ja osallistua ekosysteemin hallinnointiin?", A12: "" },
+        { Q13: "Kuinka hyvin yrityksenne tuntee tietoekosysteemin sopimusmallit ja hallinnolliset käytännöt?", A13: "" }
     ]
 };
 
-function hideSummary() {
-    const analysis = document.getElementById('summary-container');
-    analysis.style.display = "none";
-}
-
-hideSummary();
 
 // Fetch JSON data and initialize questions
 fetch('../questions.json')
     .then(response => response.json())
     .then(data => {
-        questionsData = data.questions;  // Store all questions
+        questionsData = data.questions;
+        // Store all questions
         displayQuestion(currentQuestionIndex);  // Display the first question
     })
     .catch(error => console.error("Error loading questions:", error));
+
+fetch('../titles.json')
+    .then(response => response.json())
+    .then(data => {
+        titlesData = data.titles;
+        // Store all questions
+        displayQuestion(currentQuestionIndex);  // Display the first question
+    })
+    .catch(error => console.error("Error loading titles:", error));
+
 
 // Function to display a single question based on the index
 function displayQuestion(index) {
@@ -42,6 +56,29 @@ function displayQuestion(index) {
     const questionWrapper = document.createElement('div');
     questionWrapper.classList.add('mb-4'); // Bootstrap margin for spacing
 
+    const titleRanges = [
+        { titleIndex: 0, questionIndexes: [0] }, // Title1 for question 1
+        { titleIndex: 1, questionIndexes: [1, 2, 3, 4] }, // Title2 for questions 2-5
+        { titleIndex: 2, questionIndexes: [5] }, // Title3 for question 6
+        { titleIndex: 3, questionIndexes: [6] }, // Title4 for question 7
+        { titleIndex: 4, questionIndexes: [7] }, // Title5 for question 8
+        { titleIndex: 5, questionIndexes: [8] }, // Title6 for question 9
+        { titleIndex: 6, questionIndexes: [9] }, // Title7 for question 10
+        { titleIndex: 7, questionIndexes: [10] }, // Title8 for question 11
+        { titleIndex: 8, questionIndexes: [11, 12] } // Title9 for question 12
+    ];
+
+    const titleToDisplay = titleRanges.find(range => range.questionIndexes.includes(index));
+    if (titleToDisplay) {
+        const titleData = titlesData[titleToDisplay.titleIndex];
+        if (titleData) {
+            const titleWrapper = document.createElement('h5');
+            titleWrapper.classList.add('fw-bold', 'my-3'); // Add styling for title
+            titleWrapper.textContent = Object.values(titleData)[0]; // Extract the title text
+            container.appendChild(titleWrapper);
+        }
+    }
+
     // Extract question key and text
     const questionText = item[`Q${index + 1}`];
 
@@ -51,70 +88,34 @@ function displayQuestion(index) {
     questionLabel.textContent = `${index + 1}. ${questionText}`;
     questionWrapper.appendChild(questionLabel);
 
-    if (item.type === 'radio' || item.type === 'multiselect') {
-        // Create input options based on type
-        item.options.forEach((option, optionIndex) => {
-            const optionWrapper = document.createElement('div');
-            optionWrapper.classList.add('form-check'); // Bootstrap wrapper
+    const sliderWrapper = document.createElement('div');
+    sliderWrapper.classList.add('slider-wrapper', 'my-3'); // Styling classes
 
-            const inputElement = document.createElement('input');
-            inputElement.classList.add('form-check-input'); // Bootstrap input
-            inputElement.type = item.type === 'multiselect' ? 'checkbox' : 'radio'; // Use checkbox for multiselect
-            inputElement.name = `question-${index}`; // Group inputs by question
-            inputElement.id = `question-${index}-option-${optionIndex}`; // Unique ID
-            inputElement.value = option;
+    const sliderInput = document.createElement('input');
+    sliderInput.type = 'range';
+    sliderInput.classList.add('form-range'); // Bootstrap slider class
+    sliderInput.min = item.min || 0;
+    sliderInput.max = item.max || 10;
+    sliderInput.step = item.step || 1;
+    sliderInput.id = `question-${index}-slider`;
+    sliderInput.value = sliderInput.min; // Set slider to the left (min value)
 
-            const inputLabel = document.createElement('label');
-            inputLabel.classList.add('form-check-label'); // Bootstrap label
-            inputLabel.htmlFor = inputElement.id; // Associate label with input
-            inputLabel.textContent = option;
+    const sliderValue = document.createElement('span');
+    sliderValue.classList.add('slider-value', 'ms-2'); // Space for styling
+    sliderValue.textContent = sliderInput.min; // Default value
 
-            optionWrapper.appendChild(inputElement);
-            optionWrapper.appendChild(inputLabel);
-            questionWrapper.appendChild(optionWrapper);
+    // Update displayed value when slider changes
+    sliderInput.addEventListener('input', () => {
+        sliderValue.textContent = sliderInput.value;
+        nextButton.disabled = sliderInput.value === "0";
+    });
 
-            if (item.type === 'radio') {
-                inputElement.addEventListener('change', () => {
-                    nextButton.disabled = false;
-                });
-            }
-        });
+    sliderWrapper.appendChild(sliderInput);
+    sliderWrapper.appendChild(sliderValue);
+    questionWrapper.appendChild(sliderWrapper);
 
-        if (item.type === 'multiselect') {
-            const checkboxes = questionWrapper.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', () => {
-                    nextButton.disabled = !Array.from(checkboxes).some(cb => cb.checked);
-                });
-            });
-        }
-    } else if (item.type === 'slider') {
-        // Create slider input
-        const sliderWrapper = document.createElement('div');
-        sliderWrapper.classList.add('slider-wrapper', 'my-3'); // Styling classes
+    container.appendChild(questionWrapper);
 
-        const sliderInput = document.createElement('input');
-        sliderInput.type = 'range';
-        sliderInput.classList.add('form-range'); // Bootstrap slider class
-        sliderInput.min = item.min || 0;
-        sliderInput.max = item.max || 10;
-        sliderInput.step = item.step || 1;
-        sliderInput.id = `question-${index}-slider`;
-
-        const sliderValue = document.createElement('span');
-        sliderValue.classList.add('slider-value', 'ms-2'); // Space for styling
-        sliderValue.textContent = sliderInput.min; // Default value
-
-        // Update displayed value when slider changes
-        sliderInput.addEventListener('input', () => {
-            sliderValue.textContent = sliderInput.value;
-            nextButton.disabled = false; // Enable the Next button
-        });
-
-        sliderWrapper.appendChild(sliderInput);
-        sliderWrapper.appendChild(sliderValue);
-        questionWrapper.appendChild(sliderWrapper);
-    }
 
     container.appendChild(questionWrapper);
 
@@ -126,29 +127,17 @@ function displayQuestion(index) {
 
 // Event listener for the Next button
 const nextButton = document.getElementById('next-button');
-nextButton.addEventListener('click', (progress) => {
+nextButton.addEventListener('click', () => {
     const currentQuestion = questionsData[currentQuestionIndex];
     const questionKey = `A${currentQuestionIndex + 1}`; // A1, A2, etc.
 
-    // Save the answer based on question type
-    if (currentQuestion.type === 'radio') {
-        // Find selected radio button
-        const selectedOption = document.querySelector(
-            `input[name="question-${currentQuestionIndex}"]:checked`
-        );
-        if (selectedOption) {
-            answersData.answers[currentQuestionIndex][questionKey] = selectedOption.value;
-        }
-    } else if (currentQuestion.type === 'multiselect') {
-        // Collect all checked checkboxes
-        const selectedOptions = Array.from(
-            document.querySelectorAll(`input[name="question-${currentQuestionIndex}"]:checked`)
-        ).map(checkbox => checkbox.value);
-        answersData.answers[currentQuestionIndex][questionKey] = selectedOptions.join(', ');
-    } else if (currentQuestion.type === 'slider') {
-        // Get the slider value
+    if (currentQuestion.type === 'slider') {
         const sliderValue = document.getElementById(`question-${currentQuestionIndex}-slider`).value;
         answersData.answers[currentQuestionIndex][questionKey] = sliderValue;
+
+        // Assign points based on slider value (1 = 1 point, 2 = 2 points, etc.)
+        const points = parseInt(sliderValue);
+        rankingPointCounter += points; // Add points to total
     }
 
     // Move to the next question
@@ -157,11 +146,17 @@ nextButton.addEventListener('click', (progress) => {
         displayQuestion(currentQuestionIndex);
     } else {
         // If no more questions, display answers or save them
-        document.getElementById('question-container').innerHTML = '<p>Thank you for completing the questionnaire!</p>';
-        nextButton.style.display = 'none'; // Hide the Next button
+        console.log(answersData);
 
-        // Log answersData or save it to a server
-        console.log('User Answers:', JSON.stringify(answersData, null, 2));
+        const scaleReference = document.getElementById('scale-reference');
+        if (scaleReference) scaleReference.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'none';
+
+        document.getElementById('question-container').innerHTML = "Kiitos osallistumisesta!";
+
+
+        showFeedback();
+        //displayAnalysis();
     }
 
     updateProgress();
@@ -169,22 +164,49 @@ nextButton.addEventListener('click', (progress) => {
 
 
 
-function getGeminiAnalysis() {
-    const GEMINI_API_URL = '';
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-    displayAnalysis();
-}
-
-function displayAnalysis() {
-    const analysis = document.getElementById('analysis-container');
-    nextButton.style.display = 'none';
-    analysis.style.display = 'block';
-}
-
 function updateProgress() {
     let progress = (currentQuestionIndex / questionsData.length) * 100;
     console.log(progress);
     document.getElementById('progress-bar').style.width = progress + "%";
     return progress;
+}
+
+function showFeedback() {
+    let feedbackMessage = '';
+    if (rankingPointCounter > 35) {
+        feedbackMessage = "Yrityksesi datankäyttö on erinomaista!";
+    } else if (34 >= rankingPointCounter > 25) {
+        feedbackMessage = "Yrityksesi datankäyttö on hyvää.";
+    } else if (24 >= rankingPointCounter > 15) {
+        feedbackMessage = "Yrityksesi datankäytössä on jonkin verran parannettavaa.";
+    } else {
+        feedbackMessage = "Yrityksesi datankäytössä on paljon parannettavaa.";
+    }
+
+    // Display feedback message
+    const feedbackContainer = document.createElement('div');
+    feedbackContainer.classList.add('feedback');
+    feedbackContainer.innerHTML = `
+        <h2>Pisteesi: ${rankingPointCounter}</h2>
+        <p><strong>${feedbackMessage}</strong></p>
+    `;
+
+    const container = document.getElementById('question-container');
+    container.appendChild(feedbackContainer);
+
+    // Display all questions and answers
+    const answersList = document.createElement('div');
+    answersList.classList.add('answers-list');
+    answersData.answers.forEach((answer, index) => {
+        const questionItem = document.createElement('div');
+        questionItem.classList.add('answer-item');
+        const questionText = questionsData[index][`Q${index + 1}`];
+        questionItem.innerHTML = `
+            <p><strong>Question ${index + 1}:</strong> ${questionText}</p>
+            <p><strong>Answer:</strong> ${answer[`A${index + 1}`]}</p>
+        `;
+        answersList.appendChild(questionItem);
+    });
+
+    container.appendChild(answersList);
 }
