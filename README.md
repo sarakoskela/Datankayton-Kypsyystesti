@@ -6,7 +6,7 @@ Tänne selostetaan miten projekti toimii, jos toimii
 Node.js: npm install -g npm
 Google Generative AI: npm install @google/generative-ai
 
-#Projektin ajaminen
+# Projektin ajaminen
 Projekti ajetaan pakallisesti Live Serverillä Visual Studio Codessa
 
 # Gemini
