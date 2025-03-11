@@ -30,8 +30,7 @@ fetch('../questions.json')
     .then(response => response.json())
     .then(data => {
         questionsData = data.questions;
-        // Store all questions
-        displayQuestion(currentQuestionIndex);  // Display the first question
+        displayQuestion(currentQuestionIndex);
     })
     .catch(error => console.error("Error loading questions:", error));
 
@@ -39,8 +38,7 @@ fetch('../titles.json')
     .then(response => response.json())
     .then(data => {
         titlesData = data.titles;
-        // Store all questions
-        displayQuestion(currentQuestionIndex);  // Display the first question
+        displayQuestion(currentQuestionIndex);
     })
     .catch(error => console.error("Error loading titles:", error));
 
@@ -48,24 +46,23 @@ fetch('../titles.json')
 // Function to display a single question based on the index
 function displayQuestion(index) {
     const container = document.getElementById('question-container');
-    container.innerHTML = ''; // Clear any previous question
-
+    container.innerHTML = '';
     const item = questionsData[index];
-    if (!item) return; // Check if the question exists
+    if (!item) return;
 
     const questionWrapper = document.createElement('div');
-    questionWrapper.classList.add('mb-4'); // Bootstrap margin for spacing
+    questionWrapper.classList.add('mb-4');
 
     const titleRanges = [
-        { titleIndex: 0, questionIndexes: [0] }, // Title1 for question 1
-        { titleIndex: 1, questionIndexes: [1, 2, 3, 4] }, // Title2 for questions 2-5
-        { titleIndex: 2, questionIndexes: [5] }, // Title3 for question 6
-        { titleIndex: 3, questionIndexes: [6] }, // Title4 for question 7
-        { titleIndex: 4, questionIndexes: [7] }, // Title5 for question 8
-        { titleIndex: 5, questionIndexes: [8] }, // Title6 for question 9
-        { titleIndex: 6, questionIndexes: [9] }, // Title7 for question 10
-        { titleIndex: 7, questionIndexes: [10] }, // Title8 for question 11
-        { titleIndex: 8, questionIndexes: [11, 12] } // Title9 for question 12
+        { titleIndex: 0, questionIndexes: [0] },
+        { titleIndex: 1, questionIndexes: [1, 2, 3, 4] },
+        { titleIndex: 2, questionIndexes: [5] },
+        { titleIndex: 3, questionIndexes: [6] },
+        { titleIndex: 4, questionIndexes: [7] },
+        { titleIndex: 5, questionIndexes: [8] },
+        { titleIndex: 6, questionIndexes: [9] },
+        { titleIndex: 7, questionIndexes: [10] },
+        { titleIndex: 8, questionIndexes: [11, 12] }
     ];
 
     const titleToDisplay = titleRanges.find(range => range.questionIndexes.includes(index));
@@ -73,38 +70,35 @@ function displayQuestion(index) {
         const titleData = titlesData[titleToDisplay.titleIndex];
         if (titleData) {
             const titleWrapper = document.createElement('h5');
-            titleWrapper.classList.add('fw-bold', 'my-3'); // Add styling for title
-            titleWrapper.textContent = Object.values(titleData)[0]; // Extract the title text
+            titleWrapper.classList.add('fw-bold', 'my-3');
+            titleWrapper.textContent = Object.values(titleData)[0];
             container.appendChild(titleWrapper);
         }
     }
-
-    // Extract question key and text
     const questionText = item[`Q${index + 1}`];
 
     // Create question label
     const questionLabel = document.createElement('label');
-    questionLabel.classList.add('form-label', 'fw-bold'); // Bootstrap classes for label
+    questionLabel.classList.add('form-label', 'fw-bold');
     questionLabel.textContent = `${index + 1}. ${questionText}`;
     questionWrapper.appendChild(questionLabel);
 
     const sliderWrapper = document.createElement('div');
-    sliderWrapper.classList.add('slider-wrapper', 'my-3'); // Styling classes
+    sliderWrapper.classList.add('slider-wrapper', 'my-3');
 
     const sliderInput = document.createElement('input');
     sliderInput.type = 'range';
-    sliderInput.classList.add('form-range'); // Bootstrap slider class
+    sliderInput.classList.add('form-range');
     sliderInput.min = item.min || 0;
     sliderInput.max = item.max || 10;
     sliderInput.step = item.step || 1;
     sliderInput.id = `question-${index}-slider`;
-    sliderInput.value = sliderInput.min; // Set slider to the left (min value)
+    sliderInput.value = sliderInput.min;
 
     const sliderValue = document.createElement('span');
-    sliderValue.classList.add('slider-value', 'ms-2'); // Space for styling
-    sliderValue.textContent = sliderInput.min; // Default value
+    sliderValue.classList.add('slider-value', 'ms-2');
+    sliderValue.textContent = sliderInput.min;
 
-    // Update displayed value when slider changes
     sliderInput.addEventListener('input', () => {
         sliderValue.textContent = sliderInput.value;
         nextButton.disabled = sliderInput.value === "0";
@@ -119,8 +113,7 @@ function displayQuestion(index) {
 
     container.appendChild(questionWrapper);
 
-    // Disable the Next button initially for radios and sliders
-    nextButton.disabled = item.type === 'radio' || item.type === 'slider';
+    nextButton.disabled = item.type === 'slider';
 }
 
 
@@ -129,15 +122,14 @@ function displayQuestion(index) {
 const nextButton = document.getElementById('next-button');
 nextButton.addEventListener('click', () => {
     const currentQuestion = questionsData[currentQuestionIndex];
-    const questionKey = `A${currentQuestionIndex + 1}`; // A1, A2, etc.
+    const questionKey = `A${currentQuestionIndex + 1}`;
 
     if (currentQuestion.type === 'slider') {
         const sliderValue = document.getElementById(`question-${currentQuestionIndex}-slider`).value;
         answersData.answers[currentQuestionIndex][questionKey] = sliderValue;
 
-        // Assign points based on slider value (1 = 1 point, 2 = 2 points, etc.)
         const points = parseInt(sliderValue);
-        rankingPointCounter += points; // Add points to total
+        rankingPointCounter += points;
     }
 
     // Move to the next question
@@ -145,7 +137,6 @@ nextButton.addEventListener('click', () => {
     if (currentQuestionIndex < questionsData.length) {
         displayQuestion(currentQuestionIndex);
     } else {
-        // If no more questions, display answers or save them
         console.log(answersData);
 
         const scaleReference = document.getElementById('scale-reference');
