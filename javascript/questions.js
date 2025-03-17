@@ -193,7 +193,6 @@ async function callGoogleGemini(prompt) {
         }
     };
 
-    const GEMINI_API_KEY = "AIzaSyDJxY7-8f57KiFmUP-Bip5qfdeCTpiLDvc";
     const API_REQUEST_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     try {
