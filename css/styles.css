@@ -5,15 +5,12 @@
 .fixed-size-container {
     height: 100vh;
     overflow-y: auto;
-    margin-top: 50px;
-    /* Full viewport height */
 }
 
 .card {
     width: 600px;
     height: 500px;
     overflow-y: auto;
-    margin-bottom: 50px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -28,8 +25,6 @@
 @media (max-width: 576px) {
     .card {
         width: 90%;
-        /* Adjust width for smaller screens */
         height: 90%;
-        /* Adjust height for smaller screens */
     }
 }

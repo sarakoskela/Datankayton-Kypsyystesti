@@ -1,10 +1,12 @@
-//import { displayAnalysis } from "./Express.js";
+//import axios from "axios";
+
 
 let currentQuestionIndex = 0;
 let currentTitleIndex = 0;
 let questionsData = [];
 let titlesData = [];
 let rankingPointCounter = 0;
+let prompt = "";
 
 let answersData = {
     answers: [
@@ -120,7 +122,7 @@ function displayQuestion(index) {
 
 // Event listener for the Next button
 const nextButton = document.getElementById('next-button');
-nextButton.addEventListener('click', () => {
+nextButton.addEventListener('click', async () => {
     const currentQuestion = questionsData[currentQuestionIndex];
     const questionKey = `A${currentQuestionIndex + 1}`;
 
@@ -145,13 +147,21 @@ nextButton.addEventListener('click', () => {
 
         document.getElementById('question-container').innerHTML = "Kiitos osallistumisesta!";
 
+        // Generate feedback
+        const prompt = generatePrompt(answersData.answers.map((answer, i) => ({
+            question: questionsData[i][`Q${i + 1}`],
+            response: answer[`A${i + 1}`],
+        })));
 
-        showFeedback();
-        //displayAnalysis();
+        // Call the API and display feedback
+        const feedbackMessage = await callGoogleGemini(prompt);
+        showFeedback(feedbackMessage);
     }
 
     updateProgress();
 });
+
+
 
 
 
@@ -162,19 +172,59 @@ function updateProgress() {
     return progress;
 }
 
-function showFeedback() {
-    let feedbackMessage = '';
-    if (rankingPointCounter > 35) {
-        feedbackMessage = "Yrityksesi datankäyttö on erinomaista!";
-    } else if (34 >= rankingPointCounter > 25) {
-        feedbackMessage = "Yrityksesi datankäyttö on hyvää.";
-    } else if (24 >= rankingPointCounter > 15) {
-        feedbackMessage = "Yrityksesi datankäytössä on jonkin verran parannettavaa.";
-    } else {
-        feedbackMessage = "Yrityksesi datankäytössä on paljon parannettavaa.";
-    }
+async function generatePrompt(answers) {
+    let prompt = "Analysoi seuraavat vastaukset lyhyesti:\n\n";
 
-    // Display feedback message
+    answers.forEach((answer, index) => {
+        prompt += `Kysymys ${index + 1}: ${answer.question}\nVastaus: ${answer.response}\n\n`;
+    });
+
+    prompt += "Perustuen näihin vastauksiin, analysoi yrityksen datankäytön kypsyystaso ja anna lyhyt palaute.";
+    return prompt;
+}
+
+
+async function callGoogleGemini(prompt) {
+    const payload = {
+        prompt: prompt,  // Correctly using 'prompt' here.
+        parameters: {  // Including parameters inside the 'parameters' object.
+            temperature: 0.7,
+            maxOutputTokens: 300,
+        }
+    };
+
+    const GEMINI_API_KEY = "AIzaSyDJxY7-8f57KiFmUP-Bip5qfdeCTpiLDvc";
+    const API_REQUEST_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    try {
+        const response = await fetch(API_REQUEST_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("API Error:", errorData);
+            throw new Error(`HTTP ${response.status}: ${errorData.error.message || 'Unknown error'}`);
+        }
+
+        const data = await response.json();
+        console.log("Response from Google Gemini:", data);
+        return data.candidates[0].output || "No content returned.";
+    } catch (error) {
+        console.error("Error calling Google Gemini:", error);
+        return `Error: ${error.message}`;
+    }
+}
+
+
+
+async function showFeedback(feedbackMessage) {
+    const container = document.getElementById('question-container');
+
     const feedbackContainer = document.createElement('div');
     feedbackContainer.classList.add('feedback');
     feedbackContainer.innerHTML = `
@@ -182,8 +232,8 @@ function showFeedback() {
         <p><strong>${feedbackMessage}</strong></p>
     `;
 
-    const container = document.getElementById('question-container');
     container.appendChild(feedbackContainer);
+
 
     // Display all questions and answers
     const answersList = document.createElement('div');
@@ -200,4 +250,5 @@ function showFeedback() {
     });
 
     container.appendChild(answersList);
+
 }
